@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme{
+    --font-Logo: 'Jacques Francois Shadow', 'sans-serif';
+    --font-Heading: 'Julius Sans One', 'sans-serif';
+    --font-Content: 'Lekton', "sans-serif";
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+	@apply  bg-white text-black transition-colors duration-300 ;
+}
+
+.dark body {
+	@apply bg-black/90 text-white;
+}
+
+input::placeholder {
+    transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
