@@ -4,12 +4,24 @@
     --font-Logo: 'Jacques Francois Shadow', 'sans-serif';
     --font-Heading: 'Julius Sans One', 'sans-serif';
     --font-Content: 'Lekton', "sans-serif";
+    --color-red: #FFD5D5;
+    --color-orange: #FFE9DB;
+    --color-yellow: #FEFFD9;
+    --color-green: #E1FFD0;
+    --color-teal: #D0FFEC;
+    --color-cyan: #C8FFFF;
+    --color-aqua: #D2EEFF;
+    --color-blue: #D8DEFF;
+    --color-indigo: #E4D9FF;
+    --color-violet: #F8D5FF;
+    --color-pink: #FFD9ED;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
 	@apply  bg-white text-black transition-colors duration-300 ;
+    min-height: 100vh;
 }
 
 .dark body {

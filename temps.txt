@@ -1,0 +1,5 @@
+transition-all duration-300
+
+text-[.5em] md:text-base 2xl:text-2xl
+
+border-[0.5px] md:border-1  dark:border-white

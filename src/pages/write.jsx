@@ -1,8 +1,9 @@
 import React from 'react'
+import Write from '../components/write/write'
 
 const write = () => {
   return (
-    <div>write</div>
+    <Write/>
   )
 }
 

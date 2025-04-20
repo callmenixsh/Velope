@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import './index.css'
 
-import Navbar from "./components/navbar";
+import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer";
 
 import Home from "./pages/home";
