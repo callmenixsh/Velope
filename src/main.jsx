@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import './index.css'
+import './index.css';
 
 import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer";
@@ -14,66 +14,67 @@ import Notfound from "./pages/notfound";
 
 import ScrollToTop from "./ScrollToTop";
 
-
-
 const Layout = ({ children }) => (
-	<>
-    <Navbar/>
-		<ScrollToTop />
-		{children}
-    <Footer/>
-	</>
+<div className="min-h-screen flex flex-col">
+  <Navbar />
+  <ScrollToTop />
+  <div className="flex-grow min-h-full">
+    {children}
+  </div>
+  <Footer />
+</div>
+
 );
 
 const router = createBrowserRouter([
-	{
-		path: "/",
-		element: (
-			<Layout>
-				<Home />
-			</Layout>
-		),
-	},
+  {
+    path: "/",
+    element: (
+      <Layout>
+        <Home />
+      </Layout>
+    ),
+  },
   {
     path: '/home',
     element: <Navigate to="/" replace />,
   },
-	{
-		path: "/write",
-		element: (
-			<Layout>
-				<Write />
-			</Layout>
-		),
-	},
-	{
-		path: "/read",
-		element: (
-			<Layout>
-				<Read />
-			</Layout>
-		),
-	},
-	{
-		path: "/post",
-		element: (
-			<Layout>
-				<Post />
-			</Layout>
-		),
-	},
-	{
-		path: "*",
-		element: (
-			<Layout>
-				<Notfound />
-			</Layout>
-		),
-	},
+  {
+    path: "/write/:name",
+    element: (
+      <Layout>
+        <Write />
+      </Layout>
+    ),
+  },
+  {
+    path: "/read/:name",
+    element: (
+      <Layout>
+        <Read />
+      </Layout>
+    ),
+  },
+  {
+    path: "/post",
+    element: (
+      <Layout>
+        <Post />
+      </Layout>
+    ),
+  },
+  {
+    path: "*",
+    element: (
+      <Layout>
+        <Notfound />
+      </Layout>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-	<StrictMode>
-		<RouterProvider router={router} />
-	</StrictMode>
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
 );

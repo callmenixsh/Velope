@@ -4,6 +4,8 @@
     --font-Logo: 'Jacques Francois Shadow', 'sans-serif';
     --font-Heading: 'Julius Sans One', 'sans-serif';
     --font-Content: 'Lekton', "sans-serif";
+    --font-Message: 'Send Flowers', "sans-serif";
+    --font-Special: 'Megrim', "sans-serif";
     --color-red: #FFD5D5;
     --color-orange: #FFE9DB;
     --color-yellow: #FEFFD9;
@@ -20,14 +22,30 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
-	@apply  bg-white text-black transition-colors duration-300 ;
-    min-height: 100vh;
+	@apply  bg-neutral-100 text-black transition-colors duration-300 ;
 }
 
 .dark body {
-	@apply bg-black/90 text-white;
+	@apply bg-neutral-900 text-white;
 }
 
 input::placeholder {
     transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
   }
+
+  @layer utilities {
+	@keyframes fadeInCard {
+		from {
+			opacity: 0;
+			transform: scale(0.9);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.animate-fadeInCard {
+		animation: fadeInCard 0.5s ease-out forwards;
+	}
+}

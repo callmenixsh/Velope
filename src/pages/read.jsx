@@ -1,9 +1,9 @@
 import React from 'react'
-import Posts from '../components/read/posts'
+import Read from '../components/read/read'
 
 const read = () => {
   return (
-    <Posts/>
+    <Read/>
   )
 }
 
