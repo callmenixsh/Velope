@@ -84,24 +84,24 @@ const Rnw = () => {
 
 					<div className="flex justify-around mt-2">
 						<div
-							className="group flex items-center text-[.5em] md:text-base 2xl:text-2xl transition-all duration-300 hover:scale-103"
+							className="group flex items-center text-[.5em] md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
 							onClick={() => handleNavigate("/read")}
 						>
 							<img
 								src="/assets/icons/glasses.svg"
 								alt="Light icon"
-								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-300 group-hover:-rotate-10"
+								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
 							/>
 							READ
 						</div>
 						<div
-							className="group flex items-center text-[.5em] md:text-base 2xl:text-2xl transition-all duration-300 hover:scale-103"
+							className="group flex items-center text-[.5em] md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
 							onClick={() => handleNavigate("/write")}
 						>
 							<img
 								src="/assets/icons/pen.svg"
 								alt="Light icon"
-								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-300 group-hover:-rotate-10"
+								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
 							/>
 							WRITE
 						</div>

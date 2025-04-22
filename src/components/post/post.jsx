@@ -42,13 +42,17 @@ const Post = () => {
 			<div
 				ref={cardRef}
 				style={{ backgroundColor: message.color }}
-				className="opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1  dark:border-white relative flex flex-col font-Message text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px]"
+				className={`opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative flex flex-col text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] ${message.font}`}
 			>
 				<div className="flex text-lg md:text-2xl 2xl:text-3xl">
-					<div>To:</div> <div className="ml-2 mb-2 font-bold ">{message.name}</div>
+					<div>To:</div>{" "}
+					<div className="ml-2 mb-2 font-bold ">{message.name}</div>
 				</div>
 				<div className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl ">
-					{message.message}
+					<div
+						dangerouslySetInnerHTML={{ __html: message.message }}
+						className="w-full h-full overflow-hidden"
+					/>
 				</div>
 				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
 					{formattedDate}

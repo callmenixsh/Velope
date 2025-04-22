@@ -1,26 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Write = () => {
 	const colors = [
-		"#FFD5D5", // Red
-		"#FFE9DB", // Orange
-		"#FEFFD9", // Yellow
-		"#E1FFD0", // Green
-		"#D0FFEC", // Teal
-		"#C8FFFF", // Aqua
-		"#D2EEFF", // Cyan
-		"#D8DEFF", // Blue
-		"#E4D9FF", // Indigo
-		"#F8D5FF", // Violet
-		"#FFD9ED", // Pink
+		"#FFD5D5",
+		"#FFE9DB",
+		"#FEFFD9",
+		"#E1FFD0",
+		"#D0FFEC",
+		"#C8FFFF",
+		"#D2EEFF",
+		"#D8DEFF",
+		"#E4D9FF",
+		"#F8D5FF",
+		"#FFD9ED",
 	];
-
+	const [selectedFont, setSelectedFont] = useState("font-Message1");
 	const [selectedColor, setSelectedColor] = useState("#FFD5D5");
 	const [message, setMessage] = useState("");
 	const [isSending, setIsSending] = useState(false);
 	const { name } = useParams();
+	const editorRef = useRef(null);
 
 	const today = new Date();
 	const formattedDate = today.toLocaleDateString("en-US", {
@@ -29,22 +30,40 @@ const Write = () => {
 		year: "numeric",
 	});
 
-	const handleSend = async () => {
-		if (!message.trim()) return;
-		setIsSending(true);
+	const [showConfirm, setShowConfirm] = useState(false);
+	const [messageLength, setMessageLength] = useState(0);
+	const [messageStatus, setMessageStatus] = useState("");
+	const [showConditionPopup, setShowConditionPopup] = useState(false); // For the condition popup
 
-		console.log("Sending message with color:", selectedColor);
+	const handleConfirmPopup = () => {
+		if (messageLength === 0) {
+			setMessageStatus("Message is too small!");
+			setShowConditionPopup(true); // Show condition popup
+			setShowConfirm(false); // Hide main popup
+		} else if (messageLength > 200) {
+			setMessageStatus("Message is too big!");
+			setShowConditionPopup(true); // Show condition popup
+			setShowConfirm(false); // Hide main popup
+		} else {
+			setMessageStatus("Ready to send!");
+			setShowConditionPopup(false); // Hide condition popup
+			setShowConfirm(true); // Show main confirmation popup
+		}
+	};
+
+	const handleSend = async () => {
+		setIsSending(true);
+		setShowConfirm(false);
 
 		try {
 			const res = await fetch(`${apiUrl}/messages/send`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					name: name,
 					message,
 					color: selectedColor,
+					font: selectedFont,
 					date: today,
 				}),
 			});
@@ -52,7 +71,9 @@ const Write = () => {
 			const data = await res.json();
 			console.log(data);
 			setMessage("");
+			setMessageLength(0);
 			alert("Message sent 💌");
+			document.querySelector("[contenteditable]").innerHTML = "";
 		} catch (err) {
 			console.error("Send error:", err);
 			alert("Failed to send message.");
@@ -61,42 +82,151 @@ const Write = () => {
 		}
 	};
 
+	const handleInput = (e) => {
+		e.preventDefault();
+		let newMessage = e.target.innerHTML;
+		const plainText = newMessage.replace(/<[^>]+>/g, "");
+		if (plainText.length > 200) {
+			newMessage = newMessage.slice(0, 200);
+		}
+		setMessage(newMessage);
+		setMessageLength(plainText.length);
+	};
+
+	useEffect(() => {
+		const editor = editorRef.current;
+		const handlePaste = (e) => {
+			setTimeout(() => {
+				const plainText = editor.innerText.replace(/<[^>]+>/g, "");
+				setMessageLength(plainText.length);
+			}, 0);
+		};
+
+		editor.addEventListener("paste", handlePaste);
+		return () => {
+			editor.removeEventListener("paste", handlePaste);
+		};
+	}, []);
+
 	return (
 		<div className="flex flex-col md:flex-row gap-5 justify-center items-center my-10">
-			<div
-				className="border-[0.5px] md:border-1 dark:border-white relative flex flex-col font-Message text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px]"
-				style={{ backgroundColor: selectedColor }}
-			>
-				<div className="flex text-lg md:text-2xl 2xl:text-3xl select-none">
-					<div>To:</div> <div className="ml-2">{name}</div>
-				</div>
-				<textarea
-					placeholder="Write your message..(nicknames, confessions, questions)                  remember to save your privacy!!"
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-					className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl"
-					maxLength={200}
-				/>
-				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
-					{formattedDate}
-				</div>
+			<div className="flex flex-col gap-5">
 				<div
-					onClick={handleSend}
-					className="cursor-pointer bg-gray-200 border-[0.5px] md:border-1 dark:border-white absolute bottom-0 right-0 rounded-xl"
+					className={`border-[0.5px] md:border-1 dark:border-white relative flex flex-col ${selectedFont} text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] transition-all duration-500`}
+					style={{ backgroundColor: selectedColor }}
 				>
-					<img src="/assets/icons/message.svg" className="p-2 w-16 h-12" />
+					<div className="flex text-lg md:text-2xl 2xl:text-3xl select-none">
+						<div>To:</div> <div className="ml-2">{name}</div>
+					</div>
+
+					<div
+						ref={editorRef}
+						contentEditable
+						suppressContentEditableWarning={true}
+						onInput={handleInput}
+						className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl overflow-y-auto"
+						style={{ whiteSpace: "pre-wrap" }}
+					></div>
+
+					<div
+						onClick={handleConfirmPopup}
+						className="cursor-pointer bg-gray-200 border-[0.5px] md:border-1 dark:border-white absolute bottom-0 right-0 rounded-xl"
+					>
+						<img src="/assets/icons/message.svg" className="p-2 w-16 h-12" />
+					</div>
+
+					<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
+						{formattedDate}
+					</div>
+
+					<div className="absolute bottom-6 left-3 text-[0.3em] md:text-xs 2xl:text-sm opacity-70 font-Content">
+						<span
+							style={{
+								color: messageLength > 180 ? "red" : "inherit",
+							}}
+						>
+							{messageLength}/200
+						</span>
+					</div>
+				</div>
+
+				<div className="flex justify-center items-center gap-2">
+					<div className="flex gap-2">
+						<button
+							onClick={() => setSelectedFont("font-Message1")}
+							className={`px-2 border rounded ${selectedFont === "font-Message1" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message1`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message2")}
+							className={`px-2 border rounded ${selectedFont === "font-Message2" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message2`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message3")}
+							className={`px-2 border rounded ${selectedFont === "font-Message3" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message3`}
+						>
+							Abc
+						</button>
+					</div>
 				</div>
 			</div>
-			<div className="flex md:flex-col gap-2 ">
+
+			<div className="flex md:flex-col gap-2">
 				{colors.map((color, index) => (
 					<div
 						key={index}
-						className="w-5 h-5 md:w-7 md:h-7 rounded-full  border-[0.5px] md:border-1 dark:border-white"
+						className="w-5 h-5 md:w-7 md:h-7 rounded-full border-[0.5px] md:border-1 dark:border-white"
 						style={{ backgroundColor: color }}
 						onClick={() => setSelectedColor(color)}
 					></div>
 				))}
 			</div>
+
+			{/* Condition popup for message size */}
+			{showConditionPopup && (
+				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
+					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
+						<div className="font-Content">{messageStatus}</div>
+						<div className="flex justify-center">
+							<button
+								onClick={() => setShowConditionPopup(false)} // Close the condition popup
+								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
+							>
+								Close
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{/* Main confirmation popup */}
+			{showConfirm && (
+				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
+					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
+						<div className="font-Content">{messageStatus}</div>
+						<div className="flex justify-center gap-10">
+							<button
+								onClick={() => setShowConfirm(false)} // Close the confirmation popup
+								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
+							>
+								Wait
+							</button>
+							<button
+								onClick={handleSend} // Send the message
+								className="bg-white text-black border border-black px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
+							>
+								Send
+							</button>
+						</div>
+						<div className="font-Content text-[.3em] md:text-xs 2xl:text-sm opacity-60">
+							*Make sure the message doesn’t contain any sensitive information*
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

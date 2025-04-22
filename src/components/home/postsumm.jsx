@@ -19,12 +19,15 @@ const Postsumm = ({ message }) => {
 				style={{ backgroundColor: message.color }}
 				onClick={() => navigate("/post", { state: { message } })}
 			>
-				<div className="text-[.5em] md:text-base 2xl:text-2xl font-Content">
+				<div className={`text-[.5em] md:text-base 2xl:text-2xl ${message.font}`}>
 					<div className="flex">
 						<div>To:</div>
 						<div className="ml-1 font-semibold">{message.name}</div>
 					</div>
-					<div>{preview}</div>
+					<div>			<div
+				dangerouslySetInnerHTML={{ __html: preview }}
+				className="w-full h-full overflow-hidden"
+			/></div>
 				</div>
 				<div className="text-[.3em] md:text-[.6em] 2xl:text-xs">
 					{timeAgo}

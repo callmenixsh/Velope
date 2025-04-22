@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Message from "./message";
 import { useNavigate } from "react-router-dom";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Read = () => {
@@ -34,13 +35,16 @@ const Read = () => {
 	const messageRefs = useRef([]);
 
 	const observeMessages = () => {
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add("animate-fadeInCard");
-				}
-			});
-		}, { threshold: 0.5 });
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("animate-fadeInCard");
+					}
+				});
+			},
+			{ threshold: 0.5 }
+		);
 
 		messageRefs.current.forEach((messageRef) => {
 			if (messageRef) {
@@ -53,7 +57,7 @@ const Read = () => {
 		if (messages.length > 0) {
 			observeMessages();
 		}
-	}, [messages]); 
+	}, [messages]);
 
 	return (
 		<div className="flex flex-col items-center my-5">
@@ -85,13 +89,15 @@ const Read = () => {
 			) : (
 				<div className="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 2xl:gap-10">
 					{messages.map((msg, index) => {
+
 						return (
 							<div
 								key={index}
-								ref={(el) => (messageRefs.current[index] = el)} // Assign ref to the message
-								className="opacity-0 mt-5"
+								ref={(el) => (messageRefs.current[index] = el)}
+								className={`opacity-0 mt-5 ${msg.font}`}
 							>
-								<Message key={index} message={msg} />
+								<Message key={index} message={msg} fontClass={msg.font} />{" "}
+								{/* Pass fontClass here */}
 							</div>
 						);
 					})}
