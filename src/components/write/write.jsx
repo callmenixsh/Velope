@@ -33,21 +33,21 @@ const Write = () => {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [messageLength, setMessageLength] = useState(0);
 	const [messageStatus, setMessageStatus] = useState("");
-	const [showConditionPopup, setShowConditionPopup] = useState(false); // For the condition popup
+	const [showConditionPopup, setShowConditionPopup] = useState(false); 
 
 	const handleConfirmPopup = () => {
-		if (messageLength === 0) {
-			setMessageStatus("Message is too small!");
-			setShowConditionPopup(true); // Show condition popup
-			setShowConfirm(false); // Hide main popup
+		if (messageLength < 10 ) {
+			setMessageStatus("All letters have some meaning but this one? idk man");
+			setShowConditionPopup(true); 
+			setShowConfirm(false);
 		} else if (messageLength > 200) {
-			setMessageStatus("Message is too big!");
-			setShowConditionPopup(true); // Show condition popup
-			setShowConfirm(false); // Hide main popup
+			setMessageStatus("You can only write so much in one letter!");
+			setShowConditionPopup(true); 
+			setShowConfirm(false); 
 		} else {
 			setMessageStatus("Ready to send!");
-			setShowConditionPopup(false); // Hide condition popup
-			setShowConfirm(true); // Show main confirmation popup
+			setShowConditionPopup(false); 
+			setShowConfirm(true); 
 		}
 	};
 
@@ -185,14 +185,13 @@ const Write = () => {
 				))}
 			</div>
 
-			{/* Condition popup for message size */}
 			{showConditionPopup && (
 				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
 					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
 						<div className="font-Content">{messageStatus}</div>
 						<div className="flex justify-center">
 							<button
-								onClick={() => setShowConditionPopup(false)} // Close the condition popup
+								onClick={() => setShowConditionPopup(false)} 
 								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
 								Close
@@ -202,20 +201,19 @@ const Write = () => {
 				</div>
 			)}
 
-			{/* Main confirmation popup */}
 			{showConfirm && (
 				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
 					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
 						<div className="font-Content">{messageStatus}</div>
 						<div className="flex justify-center gap-10">
 							<button
-								onClick={() => setShowConfirm(false)} // Close the confirmation popup
+								onClick={() => setShowConfirm(false)} 
 								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
 								Wait
 							</button>
 							<button
-								onClick={handleSend} // Send the message
+								onClick={handleSend} 
 								className="bg-white text-black border border-black px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
 								Send
