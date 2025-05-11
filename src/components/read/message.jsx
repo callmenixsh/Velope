@@ -20,9 +20,10 @@ const Message = ({ message, fontClass }) => {
       style={{ backgroundColor: message.color }}
       onClick={handleNavigate}
     >
-      <div className="w-full h-full overflow-hidden whitespace-pre-wrap break-words">
-        {message.message}
-      </div>
+		<div
+		  dangerouslySetInnerHTML={{ __html: message.message }}
+		  className="w-full h-full overflow-hidden"
+		/>
 
       <div className="absolute bottom-1 text-[.5em] md:text-xs 2xl:text-sm text-black">
         {formattedDate}

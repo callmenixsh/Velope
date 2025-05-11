@@ -77,7 +77,10 @@ const Post = () => {
 				</div>
 				<div className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl">
 					<div className="w-full h-full overflow-hidden whitespace-pre-wrap break-words">
-						{message.message}
+						<div
+							dangerouslySetInnerHTML={{ __html: message.message }}
+							className="w-full h-full overflow-hidden"
+						/>
 					</div>
 				</div>
 				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
@@ -103,9 +106,8 @@ const Post = () => {
 				>
 					Read More
 				</button>
-
 			</div>
-				<CommentSection postId={messageId} />
+			<CommentSection postId={messageId} />
 		</div>
 	);
 };

@@ -21,7 +21,7 @@ const Postsumm = ({ message }) => {
 			<div
 				className="flex flex-col justify-between p-2 md:p-4 2xl:p-6 w-20 h-16 md:h-32 md:w-40 2xl:h-48 2xl:w-60 rounded-sm md:rounded-md 2xl:rounded-xl border-[0.5px] md:border-1 dark:border-white transition-all duration-300 cursor-pointer"
 				style={{ backgroundColor: message.color }}
-				onClick={() => navigate(`/post/${message.messageId}`)} // <-- Updated
+				onClick={() => navigate(`/post/${message.messageId}`)}
 			>
 				<div
 					className={`text-[.5em] md:text-base 2xl:text-2xl ${message.font}`}
@@ -30,7 +30,12 @@ const Postsumm = ({ message }) => {
 						<div>To:</div>
 						<div className="ml-1 font-semibold">{truncatedName}</div>
 					</div>
-					<div className="break-words mt-1">{preview}</div>
+					<div className="break-words mt-1">
+						<div
+							dangerouslySetInnerHTML={{ __html: preview }}
+							className="w-full h-full overflow-hidden"
+						/>
+					</div>
 				</div>
 				<div className="text-[.3em] md:text-[.6em] 2xl:text-xs">{timeAgo}</div>
 			</div>

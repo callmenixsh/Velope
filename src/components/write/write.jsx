@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
+import Filter from "bad-words-es";
 
 const Write = () => {
+	const filter = new Filter();
+	filter.addWords("bitch", "slut", "dumbass", "jerkface", "idiothead");
+
 	const colors = [
 		"#FFD5D5",
 		"#FFE9DB",
@@ -16,7 +20,8 @@ const Write = () => {
 		"#F8D5FF",
 		"#FFD9ED",
 	];
-	const [selectedFont, setSelectedFont] = useState("font-Message1");
+
+	const [selectedFont, setSelectedFont] = useState("font-Message5");
 	const [selectedColor, setSelectedColor] = useState("#FFD5D5");
 	const [message, setMessage] = useState("");
 	const [isSending, setIsSending] = useState(false);
@@ -33,35 +38,42 @@ const Write = () => {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [messageLength, setMessageLength] = useState(0);
 	const [messageStatus, setMessageStatus] = useState("");
-	const [showConditionPopup, setShowConditionPopup] = useState(false); 
+	const [showConditionPopup, setShowConditionPopup] = useState(false);
 
 	const handleConfirmPopup = () => {
-		if (messageLength < 10 ) {
+		const plainText = message.replace(/<[^>]+>/g, "");
+
+		if (filter.isProfane(plainText)) {
+			setMessageStatus("Umm... let's keep things kind, okay?");
+			setShowConditionPopup(true);
+			setShowConfirm(false);
+		} else if (messageLength < 10) {
 			setMessageStatus("All letters have some meaning but this one? idk man");
-			setShowConditionPopup(true); 
+			setShowConditionPopup(true);
 			setShowConfirm(false);
 		} else if (messageLength > 200) {
 			setMessageStatus("You can only write so much in one letter!");
-			setShowConditionPopup(true); 
-			setShowConfirm(false); 
+			setShowConditionPopup(true);
+			setShowConfirm(false);
 		} else {
 			setMessageStatus("Ready to send!");
-			setShowConditionPopup(false); 
-			setShowConfirm(true); 
+			setShowConditionPopup(false);
+			setShowConfirm(true);
 		}
 	};
 
 	const handleSend = async () => {
 		setIsSending(true);
 		setShowConfirm(false);
-
+		const plainTextMessage = editorRef.current.innerHTML;
+	
 		try {
 			const res = await fetch(`${apiUrl}/messages/send`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					name: name,
-					message,
+					message: plainTextMessage,
 					color: selectedColor,
 					font: selectedFont,
 					date: today,
@@ -150,7 +162,7 @@ const Write = () => {
 					</div>
 				</div>
 
-				<div className="flex justify-center items-center gap-2">
+				<div className="flex justify-center items-center gap-2 text-xs md:text-sm 2xl:text-lg">
 					<div className="flex gap-2">
 						<button
 							onClick={() => setSelectedFont("font-Message1")}
@@ -167,6 +179,30 @@ const Write = () => {
 						<button
 							onClick={() => setSelectedFont("font-Message3")}
 							className={`px-2 border rounded ${selectedFont === "font-Message3" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message3`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message4")}
+							className={`px-2 border rounded ${selectedFont === "font-Message4" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message4`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message5")}
+							className={`px-2 border rounded ${selectedFont === "font-Message5" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message5`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message6")}
+							className={`px-2 border rounded ${selectedFont === "font-Message6" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message6`}
+						>
+							Abc
+						</button>
+						<button
+							onClick={() => setSelectedFont("font-Message7")}
+							className={`px-2 border rounded ${selectedFont === "font-Message7" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message7`}
 						>
 							Abc
 						</button>
