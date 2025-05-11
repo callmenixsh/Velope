@@ -76,7 +76,7 @@ const Read = () => {
 						No messages yet.
 					</div>
 					<div className="text-[.5em] md:text-base 2xl:text-2xl mt-2">
-						Looks like you haven't sent any messages to {name} yet. Send them
+						Looks like noone has sent any messages to '{name}' yet. Send them
 						one now!
 					</div>
 					<button
@@ -89,7 +89,6 @@ const Read = () => {
 			) : (
 				<div className="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 2xl:gap-10">
 					{messages.map((msg, index) => {
-
 						return (
 							<div
 								key={index}
@@ -97,7 +96,6 @@ const Read = () => {
 								className={`opacity-0 mt-5 ${msg.font}`}
 							>
 								<Message key={index} message={msg} fontClass={msg.font} />{" "}
-								{/* Pass fontClass here */}
 							</div>
 						);
 					})}

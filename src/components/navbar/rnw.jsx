@@ -9,13 +9,21 @@ const Rnw = () => {
 	const [suggestionSelected, setSuggestionSelected] = useState(false);
 	const navigate = useNavigate();
 
+	const MAX_NAME_LENGTH = 11;
+	const RESTRICTED_NAME = "Logs";
+
 	const isValidName = (value) => /^[a-zA-Z\s]+$/.test(value.trim());
 
 	const handleNavigate = (path) => {
-		if (isValidName(name)) {
+		if (name.trim().toLowerCase() === RESTRICTED_NAME.toLowerCase() && path === "/write") {
+			alert("You can only read the Logs.");
+			return;
+		}
+
+		if (isValidName(name) && name.trim().length <= MAX_NAME_LENGTH) {
 			navigate(`${path}/${encodeURIComponent(name.trim())}`);
 		} else {
-			alert("Please enter a valid name");
+			alert(`Please enter a valid name (max ${MAX_NAME_LENGTH} characters).`);
 		}
 	};
 
@@ -37,21 +45,23 @@ const Rnw = () => {
 
 		const delayDebounce = setTimeout(() => {
 			fetchSuggestions();
-		}, 300); 
+		}, 300);
 
 		return () => clearTimeout(delayDebounce);
-	}, [name, suggestionSelected]); 
+	}, [name, suggestionSelected]);
 
 	const handleSuggestionClick = (suggestedName) => {
 		setName(suggestedName);
 		setSuggestions([]);
 		setShowSuggestions(false);
-		setSuggestionSelected(true); 
+		setSuggestionSelected(true);
 	};
 
 	const handleInputChange = (e) => {
-		setName(e.target.value);
-		setSuggestionSelected(false); 
+		if (e.target.value.length <= MAX_NAME_LENGTH) {
+			setName(e.target.value);
+		}
+		setSuggestionSelected(false);
 	};
 
 	return (

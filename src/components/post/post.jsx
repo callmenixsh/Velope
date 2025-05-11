@@ -1,18 +1,45 @@
-import React, { useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { toPng } from "html-to-image";
 import Notfound from "../notfound/notfound";
+import CommentSection from "./comments";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Post = () => {
 	const cardRef = useRef(null);
 	const navigate = useNavigate();
-	const { state } = useLocation();
-	const message = state?.message;
+	const { messageId } = useParams();
 
-	if (!message) {
-		navigate("/read");
-		return <Notfound />;
-	}
+	const [message, setMessage] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		if (!messageId) {
+			setError("Message ID is missing.");
+			setLoading(false);
+			return;
+		}
+
+		const fetchMessage = async () => {
+			try {
+				const res = await fetch(`${apiUrl}/message/${messageId}`);
+				if (!res.ok) throw new Error("Message not found.");
+				const data = await res.json();
+				setMessage(data);
+			} catch (error) {
+				console.error(error);
+				setError(error.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchMessage();
+	}, [messageId]);
+
+	if (loading) return <div>Loading...</div>;
+	if (error || !message) return <Notfound />;
 
 	const formattedDate = new Date(message.date).toLocaleDateString("en-US", {
 		month: "short",
@@ -45,14 +72,13 @@ const Post = () => {
 				className={`opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative flex flex-col text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] ${message.font}`}
 			>
 				<div className="flex text-lg md:text-2xl 2xl:text-3xl">
-					<div>To:</div>{" "}
-					<div className="ml-2 mb-2 font-bold ">{message.name}</div>
+					<div>To:</div>
+					<div className="ml-2 mb-2 font-bold">{message.name}</div>
 				</div>
-				<div className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl ">
-					<div
-						dangerouslySetInnerHTML={{ __html: message.message }}
-						className="w-full h-full overflow-hidden"
-					/>
+				<div className="resize w-full h-full rounded-md p-2 focus:outline-none text-base md:text-2xl">
+					<div className="w-full h-full overflow-hidden whitespace-pre-wrap break-words">
+						{message.message}
+					</div>
 				</div>
 				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
 					{formattedDate}
@@ -65,7 +91,7 @@ const Post = () => {
 					className="border p-2 rounded-lg dark:border-white transition-all duration-300"
 				>
 					<img
-						src="assets/icons/download.svg"
+						src="/assets/icons/download.svg"
 						alt="Download"
 						className="size-8 dark:invert transition-all duration-300"
 					/>
@@ -77,7 +103,9 @@ const Post = () => {
 				>
 					Read More
 				</button>
+
 			</div>
+				<CommentSection postId={messageId} />
 		</div>
 	);
 };

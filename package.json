@@ -13,6 +13,8 @@
     "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.1.4",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.9.0",
+    "bad-words-es": "^1.0.0",
     "date-fns": "^4.1.0",
     "html-to-image": "^1.11.13",
     "postcss": "^8.5.3",

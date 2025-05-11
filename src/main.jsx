@@ -56,7 +56,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/post",
+    path: "/post/:messageId",
     element: (
       <Layout>
         <Post />
