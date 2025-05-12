@@ -66,11 +66,11 @@ const Post = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center mt-5 gap-5">
+		<div className="flex flex-col items-center mt-10 gap-5">
 			<div
 				ref={cardRef}
-				style={{ backgroundColor: message.color }}
-				className={`opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative flex flex-col text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px]  ${message.font}`}
+				style={{ backgroundColor: message.color, color: message.textcolor }}
+				className={`opacity-0 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative text-black flex flex-col p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] ${message.font}`}
 			>
 				<div className="flex text-lg md:text-2xl 2xl:text-3xl">
 					<div>To:</div>
@@ -84,7 +84,7 @@ const Post = () => {
 						/>
 					</div>
 				</div>
-				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
+				<div className="absolute bottom-0 left-3 text-xs md:text-sm">
 					{formattedDate}
 				</div>
 				<div className="absolute right-3 bottom-3 flex gap-2">
@@ -92,7 +92,7 @@ const Post = () => {
 						messageId={messageId}
 						currentReactions={message.reactions}
 						className="text-xs md:text-base 2xl:text-2xl"
-						smclassName="text-[0.5rem] md:text-xs 2xl:text-sm"
+						smclassName="text-[0.7rem] md:text-xs 2xl:text-sm px-1"
 					/>
 				</div>
 			</div>

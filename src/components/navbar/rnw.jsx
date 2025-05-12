@@ -70,7 +70,7 @@ const Rnw = () => {
 				<div className="font-Heading">
 					<div className="relative">
 						<input
-							className="font-Content w-full border-b-1 md:border-b-2 border-gray-400 dark:border-white/70 dark:focus:border-white focus:border-black outline-none px-2 placeholder-black/50 dark:placeholder-white/50 text-center text-[.9em] md:text-base 2xl:text-2xl transition-all duration-300"
+							className="font-Content w-full border-b-1 md:border-b-2 border-gray-400 dark:border-white/70 dark:focus:border-white focus:border-black outline-none px-2 placeholder-black/50 dark:placeholder-white/50 text-center text-lg md:text-xl 2xl:text-2xl transition-all duration-300"
 							placeholder="Name"
 							value={name}
 							onChange={handleInputChange}
@@ -78,7 +78,7 @@ const Rnw = () => {
 							onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
 						/>
 						{showSuggestions && suggestions.length > 0 && (
-							<ul className="absolute bg-white dark:bg-black border-[0.5px] md:border-1 rounded-md shadow w-full z-10 text-[.8em] md:text-xs 2xl:text-sm text-center">
+							<ul className="absolute bg-white dark:bg-black border-[0.5px] md:border-1 rounded-md shadow w-full z-10 text-sm md:text-xs 2xl:text-sm text-center">
 								{suggestions.map((s, idx) => (
 									<li
 										key={idx}
@@ -94,24 +94,24 @@ const Rnw = () => {
 
 					<div className="flex justify-around mt-2 gap-4">
 						<div
-							className="group flex items-center text-[.7em] md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
+							className="group flex items-center text-sm md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
 							onClick={() => handleNavigate("/read")}
 						>
 							<img
 								src="/assets/icons/glasses.svg"
 								alt="Light icon"
-								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
+								className="dark:invert size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
 							/>
 							READ
 						</div>
 						<div
-							className="group flex items-center text-[.7em] md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
+							className="group flex items-center text-sm md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
 							onClick={() => handleNavigate("/write")}
 						>
 							<img
 								src="/assets/icons/pen.svg"
 								alt="Light icon"
-								className="dark:invert size-4 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
+								className="dark:invert size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
 							/>
 							WRITE
 						</div>

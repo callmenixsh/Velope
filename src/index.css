@@ -23,6 +23,7 @@
 	--color-indigo: #e4d9ff;
 	--color-violet: #f8d5ff;
 	--color-pink: #ffd9ed;
+  --color-blank: #ffffff;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

@@ -62,20 +62,20 @@ const Read = () => {
 	return (
 		<div className="flex flex-col items-center my-5">
 			<div className="flex flex-col items-center">
-				<div className="text-base md:text-2xl 2xl:text-3xl font-Content py-4">
+				<div className="text-base md:text-2xl 2xl:text-3xl font-Content md:py-4">
 					Sent To: {name}
 				</div>
-				<div className="text-[.5em] md:text-xs 2xl:text-sm">
+				<div className="text-[.8em] md:text-xs 2xl:text-sm">
 					{messages.length} message{messages.length !== 1 ? "s" : ""}
 				</div>
 			</div>
 
 			{messages.length === 0 ? (
-				<div className="flex flex-col items-center p-4 border rounded-md shadow-md mt-6 text-center">
-					<div className="text-[.5em] md:text-base 2xl:text-2xl font-medium">
+				<div className="flex flex-col items-center p-4 border rounded-md shadow-md mt-6 text-center mx-5">
+					<div className="text-sm md:text-base 2xl:text-2xl font-medium">
 						No messages yet.
 					</div>
-					<div className="text-[.5em] md:text-base 2xl:text-2xl mt-2">
+					<div className="text-[.8em] md:text-base 2xl:text-2xl mt-2">
 						Looks like noone has sent any messages to '{name}' yet. Send them
 						one now!
 					</div>

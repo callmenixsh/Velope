@@ -88,8 +88,9 @@ const Reactions = ({ messageId, currentReactions = {}, className = "", smclassNa
           e.stopPropagation();
           handleReaction(emoji);
         }}
-        className={`flex items-center bg-white/80 rounded-full px-[.2rem] transition-all hover:opacity-80
-          ${userReactions.includes(emoji) ? "font-bold" : ""}
+        className={`flex items-center  rounded-full px-[.2rem] transition-all hover:opacity-90 text-shadow-md drop-shadow-md p-1
+          ${userReactions.includes(emoji) ? "font-bold bg-white" : "bg-white/40"}
+
           ${count > 0 ? "opacity-100" : "opacity-50"}
         `}
       >

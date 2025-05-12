@@ -19,6 +19,7 @@ const Write = () => {
 		"#E4D9FF",
 		"#F8D5FF",
 		"#FFD9ED",
+		"#ffffff"
 	];
 
 	const [selectedFont, setSelectedFont] = useState("font-Message5");
@@ -38,21 +39,25 @@ const Write = () => {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [messageLength, setMessageLength] = useState(0);
 	const [messageStatus, setMessageStatus] = useState("");
+	const [messageResponse, setMessageResponse] = useState("");
 	const [showConditionPopup, setShowConditionPopup] = useState(false);
 
 	const handleConfirmPopup = () => {
 		const plainText = message.replace(/<[^>]+>/g, "");
 
 		if (filter.isProfane(plainText)) {
-			setMessageStatus("Umm... let's keep things kind, okay?");
+			setMessageStatus("Umm... let's keep things civil, okay?");
+			setMessageResponse("Uh I'm Sorry..!");
 			setShowConditionPopup(true);
 			setShowConfirm(false);
 		} else if (messageLength < 10) {
-			setMessageStatus("All letters have some meaning but this one? idk man");
+			setMessageStatus("All letters have some meaning, but this? Really?");
+			setMessageResponse("Okay lemme write some");
 			setShowConditionPopup(true);
 			setShowConfirm(false);
 		} else if (messageLength > 200) {
-			setMessageStatus("You can only write so much in one letter!");
+			setMessageStatus("You can only write so much in a letter!");
+			setMessageResponse("Okay lemme delete some");
 			setShowConditionPopup(true);
 			setShowConfirm(false);
 		} else {
@@ -66,7 +71,7 @@ const Write = () => {
 		setIsSending(true);
 		setShowConfirm(false);
 		const plainTextMessage = editorRef.current.innerHTML;
-	
+
 		try {
 			const res = await fetch(`${apiUrl}/messages/send`, {
 				method: "POST",
@@ -121,8 +126,8 @@ const Write = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col md:flex-row gap-5 justify-center items-center my-10">
-			<div className="flex flex-col gap-5">
+		<div className="flex flex-col md:flex-row gap-5 justify-center items-center md:items-start my-10">
+			<div className="flex flex-col items-center gap-5">
 				<div
 					className={`border-[0.5px] md:border-1 dark:border-white relative flex flex-col ${selectedFont} text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] transition-all duration-500`}
 					style={{ backgroundColor: selectedColor }}
@@ -144,14 +149,14 @@ const Write = () => {
 						onClick={handleConfirmPopup}
 						className="cursor-pointer bg-gray-200 border-[0.5px] md:border-1 dark:border-white absolute bottom-0 right-0 rounded-xl"
 					>
-						<img src="/assets/icons/message.svg" className="p-2 w-16 h-12" />
+						<img src="/assets/icons/message.svg" className="p-2 w-12 md:w-16" />
 					</div>
 
-					<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
+					<div className="absolute bottom-1 left-3 text-xs md:text-sm">
 						{formattedDate}
 					</div>
 
-					<div className="absolute bottom-6 left-3 text-[0.3em] md:text-xs 2xl:text-sm opacity-70 font-Content">
+					<div className="absolute bottom-6 left-3 text-[0.5em] md:text-xs 2xl:text-sm opacity-70 font-Content">
 						<span
 							style={{
 								color: messageLength > 180 ? "red" : "inherit",
@@ -162,47 +167,75 @@ const Write = () => {
 					</div>
 				</div>
 
-				<div className="flex justify-center items-center gap-2 text-xs md:text-sm 2xl:text-lg">
+				<div className="flex justify-center items-center gap-2 text-sm md:text-sm 2xl:text-lg">
 					<div className="flex gap-2">
 						<button
 							onClick={() => setSelectedFont("font-Message1")}
-							className={`px-2 border rounded ${selectedFont === "font-Message1" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message1`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message1"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message1`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message2")}
-							className={`px-2 border rounded ${selectedFont === "font-Message2" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message2`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message2"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message2`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message3")}
-							className={`px-2 border rounded ${selectedFont === "font-Message3" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message3`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message3"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message3`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message4")}
-							className={`px-2 border rounded ${selectedFont === "font-Message4" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message4`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message4"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message4`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message5")}
-							className={`px-2 border rounded ${selectedFont === "font-Message5" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message5`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message5"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message5`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message6")}
-							className={`px-2 border rounded ${selectedFont === "font-Message6" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message6`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message6"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message6`}
 						>
 							Abc
 						</button>
 						<button
 							onClick={() => setSelectedFont("font-Message7")}
-							className={`px-2 border rounded ${selectedFont === "font-Message7" ? "bg-black text-white dark:bg-white dark:text-black" : ""} font-Message7`}
+							className={`px-2 border rounded ${
+								selectedFont === "font-Message7"
+									? "bg-black text-white dark:bg-white dark:text-black"
+									: ""
+							} font-Message7`}
 						>
 							Abc
 						</button>
@@ -222,15 +255,15 @@ const Write = () => {
 			</div>
 
 			{showConditionPopup && (
-				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
+				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-sm md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
 					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
 						<div className="font-Content">{messageStatus}</div>
 						<div className="flex justify-center">
 							<button
-								onClick={() => setShowConditionPopup(false)} 
+								onClick={() => setShowConditionPopup(false)}
 								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
-								Close
+								{messageResponse}
 							</button>
 						</div>
 					</div>
@@ -238,24 +271,24 @@ const Write = () => {
 			)}
 
 			{showConfirm && (
-				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-[.5em] md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
+				<div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 text-sm md:text-base 2xl:text-2xl opacity-0 animate-fadeInCard scale-110">
 					<div className="bg-neutral-300 dark:bg-neutral-950 border border-black dark:border-white text-black dark:text-white px-3 py-5 md:px-6 md:py-10 rounded-xl w-fit h-fit shadow-lg flex flex-col gap-4 text-center transition-all duration-200">
 						<div className="font-Content">{messageStatus}</div>
 						<div className="flex justify-center gap-10">
 							<button
-								onClick={() => setShowConfirm(false)} 
+								onClick={() => setShowConfirm(false)}
 								className="bg-black text-white border border-white px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
 								Wait
 							</button>
 							<button
-								onClick={handleSend} 
+								onClick={handleSend}
 								className="bg-white text-black border border-black px-2 py-1 md:px-4 md:py-2 rounded-xl hover:invert font-Special transition-all duration-200"
 							>
 								Send
 							</button>
 						</div>
-						<div className="font-Content text-[.3em] md:text-xs 2xl:text-sm opacity-60">
+						<div className="font-Content text-[.7em] md:text-xs 2xl:text-sm opacity-60">
 							*Make sure the message doesn’t contain any sensitive information*
 						</div>
 					</div>

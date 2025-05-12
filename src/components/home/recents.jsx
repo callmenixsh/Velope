@@ -38,7 +38,7 @@ const Recents = () => {
 
 	return (
 		<div className="flex items-center flex-col">
-			<div className="font-Heading pt-3 md:pt-8 pb-2 md:pb-4 text-[.7em] md:text-base 2xl:text-2xl">
+			<div className="font-Heading pt-3 md:pt-8 pb-2 md:pb-4 text-base md:text-lg 2xl:text-2xl">
 				Recent Velopes
 			</div>
 			<div className="flex items-start justify-center mx-5 w-[95%] xl:w-[80%] 2xl:w-[1500px] flex-grow">
