@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toPng } from "html-to-image";
 import Notfound from "../notfound/notfound";
 import CommentSection from "./comments";
+import Reactions from "../reactions";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Post = () => {
@@ -65,11 +66,11 @@ const Post = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center my-10 gap-5">
+		<div className="flex flex-col items-center my-10 gap-5 group">
 			<div
 				ref={cardRef}
 				style={{ backgroundColor: message.color }}
-				className={`opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative flex flex-col text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px] ${message.font}`}
+				className={`opacity-0 scale-90 animate-fadeInCard border-[0.5px] md:border-1 dark:border-white relative flex flex-col text-black p-5 rounded-xl w-[300px] h-[320px] md:w-[400px] md:h-[420px]  ${message.font}`}
 			>
 				<div className="flex text-lg md:text-2xl 2xl:text-3xl">
 					<div>To:</div>
@@ -85,6 +86,14 @@ const Post = () => {
 				</div>
 				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
 					{formattedDate}
+				</div>
+				<div className="absolute right-3 bottom-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+					<Reactions
+						messageId={messageId}
+						currentReactions={message.reactions}
+						className="text-xs md:text-base 2xl:text-2xl"
+						smclassName="text-[0.5rem] md:text-xs 2xl:text-sm"
+					/>
 				</div>
 			</div>
 

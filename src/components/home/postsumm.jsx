@@ -16,6 +16,11 @@ const Postsumm = ({ message }) => {
 		addSuffix: true,
 	});
 
+	// Filter out reactions with count 0
+	const filteredReactions = Object.entries(message.reactions).filter(
+		([emoji, count]) => count > 0
+	);
+
 	return (
 		<div className="flex flex-col group select-none text-black">
 			<div
@@ -33,10 +38,29 @@ const Postsumm = ({ message }) => {
 					<div className="break-words mt-1">
 						<div
 							dangerouslySetInnerHTML={{ __html: preview }}
-							className="w-full h-full overflow-hidden"
+							className="w-full h-full overflow"
 						/>
 					</div>
 				</div>
+
+				<div className="absolute right-[.1rem] -bottom-[.3rem] flex gap-[.2rem] opacity-100">
+					{filteredReactions.length > 0 &&
+						filteredReactions.map(([emoji, count]) => (
+							<button
+								key={emoji}
+								disabled
+								className="flex items-center bg-white rounded-full px-[.1rem] text-[.4rem] md:text-sm 2xl:text-2xl border-[.01rem] md:border-[.5px]"
+							>
+								<span>{emoji}</span>
+								{count > 0 && (
+									<span className="text-[0.3rem] md:text-[.5rem] 2xl:text-sm">
+										{count}
+									</span>
+								)}
+							</button>
+						))}
+				</div>
+
 				<div className="text-[.3em] md:text-[.6em] 2xl:text-xs">{timeAgo}</div>
 			</div>
 		</div>
