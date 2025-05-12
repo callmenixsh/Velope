@@ -38,11 +38,11 @@ const Recents = () => {
 
 	return (
 		<div className="flex items-center flex-col">
-			<div className="font-Heading pt-3 md:pt-8 pb-2 md:pb-4 text-[.5em] md:text-base 2xl:text-2xl">
+			<div className="font-Heading pt-3 md:pt-8 pb-2 md:pb-4 text-[.7em] md:text-base 2xl:text-2xl">
 				Recent Velopes
 			</div>
-			<div className="flex items-start justify-center mx-10 w-[95%] xl:w-[80%] 2xl:w-[1500px] flex-grow">
-				<div className="grid grid-cols-3 sm:grid-cols-4 gap-2 md:gap-4 2xl:gap-8">
+			<div className="flex items-start justify-center mx-5 w-[95%] xl:w-[80%] 2xl:w-[1500px] flex-grow">
+				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 2xl:gap-8">
 					{messages.map((msg, index) => (
 						<div
 							key={index}

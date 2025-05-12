@@ -1,34 +1,34 @@
 @import "tailwindcss";
 
-@theme{
-    --font-Logo: 'Jacques Francois Shadow', 'sans-serif';
-    --font-Heading: 'Julius Sans One', 'sans-serif';
-    --font-Content: 'Lekton', "sans-serif";
-    --font-Message1: 'Lavishly Yours', "sans-serif";
-    --font-Message2: 'Ole', "sans-serif";
-    --font-Message3: 'Send Flowers', "sans-serif";
-    --font-Message4: 'Kablammo', "sans-serif";
-    --font-Message5: 'Pacifico', "sans-serif";    
-    --font-Message6: 'Macondo', "sans-serif";    
-    --font-Message7: 'Tektur', "sans-serif";
-    --font-Special: 'Megrim', "sans-serif";
-    --color-red: #FFD5D5;
-    --color-orange: #FFE9DB;
-    --color-yellow: #FEFFD9;
-    --color-green: #E1FFD0;
-    --color-teal: #D0FFEC;
-    --color-cyan: #C8FFFF;
-    --color-aqua: #D2EEFF;
-    --color-blue: #D8DEFF;
-    --color-indigo: #E4D9FF;
-    --color-violet: #F8D5FF;
-    --color-pink: #FFD9ED;
+@theme {
+	--font-Logo: "Jacques Francois Shadow", "sans-serif";
+	--font-Heading: "Julius Sans One", "sans-serif";
+	--font-Content: "Lekton", "sans-serif";
+	--font-Message1: "Lavishly Yours", "sans-serif";
+	--font-Message2: "Ole", "sans-serif";
+	--font-Message3: "Send Flowers", "sans-serif";
+	--font-Message4: "Kablammo", "sans-serif";
+	--font-Message5: "Pacifico", "sans-serif";
+	--font-Message6: "Macondo", "sans-serif";
+	--font-Message7: "Tektur", "sans-serif";
+	--font-Special: "Megrim", "sans-serif";
+	--color-red: #ffd5d5;
+	--color-orange: #ffe9db;
+	--color-yellow: #feffd9;
+	--color-green: #e1ffd0;
+	--color-teal: #d0ffec;
+	--color-cyan: #c8ffff;
+	--color-aqua: #d2eeff;
+	--color-blue: #d8deff;
+	--color-indigo: #e4d9ff;
+	--color-violet: #f8d5ff;
+	--color-pink: #ffd9ed;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
-	@apply  bg-neutral-100 text-black transition-colors duration-300 ;
+	@apply bg-neutral-100 text-black transition-colors duration-300;
 }
 
 .dark body {
@@ -36,10 +36,10 @@ body {
 }
 
 input::placeholder {
-    transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
-  }
+	transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+}
 
-  @layer utilities {
+@layer utilities {
 	@keyframes fadeInCard {
 		from {
 			opacity: 0;
@@ -54,4 +54,82 @@ input::placeholder {
 	.animate-fadeInCard {
 		animation: fadeInCard 0.5s ease-out forwards;
 	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-slide-up {
+	animation: slideUp 0.3s ease-out;
+}
+
+
+@layer utilities {
+  .slide-enter-left {
+    animation: slideEnterLeft 0.4s ease forwards;
+  }
+
+  .slide-exit-left {
+    animation: slideExitLeft 0.4s ease forwards;
+  }
+
+  .slide-enter-right {
+    animation: slideEnterRight 0.4s ease forwards;
+  }
+
+  .slide-exit-right {
+    animation: slideExitRight 0.4s ease forwards;
+  }
+
+  @keyframes slideEnterLeft {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideExitLeft {
+    0% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideEnterRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideExitRight {
+    0% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
 }

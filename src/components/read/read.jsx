@@ -87,13 +87,13 @@ const Read = () => {
 					</button>
 				</div>
 			) : (
-				<div className="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 2xl:gap-10">
+				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 2xl:gap-10 mt-2">
 					{messages.map((msg, index) => {
 						return (
 							<div
 								key={index}
 								ref={(el) => (messageRefs.current[index] = el)}
-								className={`opacity-0 mt-5 ${msg.font}`}
+								className={`opacity-0 ${msg.font}`}
 							>
 								<Message key={index} message={msg} fontClass={msg.font} />{" "}
 							</div>

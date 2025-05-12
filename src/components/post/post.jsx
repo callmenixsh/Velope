@@ -66,7 +66,7 @@ const Post = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center my-10 gap-5 group">
+		<div className="flex flex-col items-center mt-5 gap-5">
 			<div
 				ref={cardRef}
 				style={{ backgroundColor: message.color }}
@@ -87,7 +87,7 @@ const Post = () => {
 				<div className="absolute bottom-0 left-3 text-[0.5em] md:text-sm">
 					{formattedDate}
 				</div>
-				<div className="absolute right-3 bottom-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+				<div className="absolute right-3 bottom-3 flex gap-2">
 					<Reactions
 						messageId={messageId}
 						currentReactions={message.reactions}
@@ -100,18 +100,18 @@ const Post = () => {
 			<div className="flex gap-4">
 				<button
 					onClick={handleDownload}
-					className="border p-2 rounded-lg dark:border-white transition-all duration-300"
+					className="border p-[.5em] rounded-lg dark:border-white transition-all duration-300"
 				>
 					<img
 						src="/assets/icons/download.svg"
 						alt="Download"
-						className="size-8 dark:invert transition-all duration-300"
+						className="size-6 md:size-8 dark:invert transition-all duration-300"
 					/>
 				</button>
 
 				<button
 					onClick={handleReadMore}
-					className="border p-2 rounded-lg dark:border-white transition-all duration-300"
+					className="border p-[.5em] rounded-lg dark:border-white transition-all duration-300 text-xs md:text-base"
 				>
 					Read More
 				</button>

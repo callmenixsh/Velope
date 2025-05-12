@@ -42,6 +42,10 @@ const Comments = ({ postId }) => {
 			});
 			const data = await res.json();
 			setInput("");
+			const textarea = document.querySelector("textarea");
+			if (textarea) {
+				textarea.style.height = "auto";
+			}
 			fetchComments();
 		} catch (err) {
 			console.error("Error sending comment:", err);
@@ -71,31 +75,44 @@ const Comments = ({ postId }) => {
 	};
 
 	return (
-		<div className="w-[80%] xl:w-[60%] 2xl:w-[1000px] mt-30">
+		<div className="w-[80%] xl:w-[60%] 2xl:w-[1000px] mt-5 md:mt-20">
 			<div className="mb-10 gap-[2em] justify-around">
 				<div className="relative">
-					<input
-						className="relative border-t-1 b-white p-2 transition-all duration-300 text-[.5em] md:text-base 2xl:text-2xl z-10 w-full"
-						type="text"
+					<textarea
+						className="resize-none overflow-hidden border-t-1 b-white p-2 transition-all duration-300 text-[.7em] md:text-base 2xl:text-2xl z-10 w-full leading-tight"
+						rows={1}
 						placeholder="Add a comment.. (only recent 5 are shown)"
 						value={input}
-						onChange={handleChange}
+						onChange={(e) => {
+							if (e.target.value.length <= 100) {
+								setInput(e.target.value);
+								e.target.style.height = "auto";
+								e.target.style.height = `${e.target.scrollHeight}px`;
+							}
+						}}
 						maxLength={100}
 					/>
-					<div className="absolute text-[.4em] md:text-xs 2xl:text-base text-gray-500 right-2 bottom-0">
+
+					<div className="absolute text-[.4em] md:text-xs 2xl:text-base text-gray-500 right-1 top-0">
 						{input.length}/100
 					</div>
-					<button
-						onClick={handleSend}
-						className="ml-2 size-[2em] md:size-[2.5em] absolute border p-2 rounded-lg dark:border-white transition-all duration-300 right-[-3em] top-1 hover:bg-black/20 dark:hover:bg-white/20"
-						disabled={isSending}
-					>
-						<img
-							src="/assets/icons/send.svg"
-							alt="Send"
-							className="dark:invert transition-all duration-300"
-						/>
-					</button>
+				</div>
+				<div className="flex justify-end">
+					{input.trim() && (
+						<div className="flex justify-end animate-slide-up">
+							<button
+								onClick={handleSend}
+								className="border p-1 rounded-lg dark:border-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20"
+								disabled={isSending}
+							>
+								<img
+									src="/assets/icons/send.svg"
+									alt="Send"
+									className="size-6 md:size-8 dark:invert transition-all duration-300"
+								/>
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 
@@ -112,15 +129,15 @@ const Comments = ({ postId }) => {
 				</button>
 			</div>
 
-			<ul className="flex flex-col text-[.5em] md:text-base 2xl:text-2xl px-[2em] gap-[1em] mt-5">
+			<ul className="flex flex-col text-[.7em] md:text-base 2xl:text-2xl px-[2em] gap-[1em] mt-5">
 				{[...comments].reverse().map((comment, index) => (
 					<li
 						className="border-b-1 border-black/20 dark:border-white/20"
 						key={index}
 					>
 						<p>{comment.comment}</p>
-						<span className="text-sm text-gray-500">
-							{formatTimeAgo(comment.timestamp)} 
+						<span className="text-[.5em] md:text-base 2xl:text-2xl text-gray-500">
+							{formatTimeAgo(comment.timestamp)}
 						</span>
 					</li>
 				))}
