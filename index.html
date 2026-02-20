@@ -1,17 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image" href="/velope.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&family=Julius+Sans+One&family=Kablammo&family=Lavishly+Yours&family=Lekton:ital,wght@0,400;0,700;1,400&family=Macondo&family=Megrim&family=Ole&family=Pacifico&family=Send+Flowers&family=Tektur:wdth,wght@87.8,400..900&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&family=Julius+Sans+One&family=Kablammo&family=Lavishly+Yours&family=Lekton:ital,wght@0,400;0,700;1,400&family=Macondo&family=Megrim&family=Ole&family=Pacifico&family=Send+Flowers&family=Tektur:wdth,wght@87.8,400..900&display=swap"
+			rel="stylesheet"
+		/>
 
 		<title>Velope</title>
 	</head>
 	<body>
 		<div id="root"></div>
 		<script type="module" src="/src/main.jsx"></script>
+		<script type="module">
+			(function () {
+				const SITE_ID = "Velope";
+				const SITE_URL = "https://velope.netlify.app/";
+				const COOLDOWN_MS = 2000;
+
+				const lastTracked = sessionStorage.getItem("visteria_last_" + SITE_ID);
+				const now = Date.now();
+
+				if (lastTracked && now - parseInt(lastTracked) < COOLDOWN_MS) return;
+
+				if (document.hidden) return;
+
+				sessionStorage.setItem("visteria_last_" + SITE_ID, now.toString());
+
+				fetch("https://visteria.vercel.app/api/visits/track", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						siteId: SITE_ID,
+						siteUrl: SITE_URL,
+						url: location.href,
+						referrer: document.referrer,
+						userAgent: navigator.userAgent,
+						visitedAt: new Date().toISOString(),
+					}),
+					keepalive: true,
+				}).catch(() => {});
+			})();
+		</script>
 	</body>
 </html>
