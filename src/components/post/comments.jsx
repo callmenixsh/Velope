@@ -57,93 +57,106 @@ const Comments = ({ postId }) => {
 	const formatTimeAgo = (timestamp) => {
 		const now = new Date();
 		const commentDate = new Date(timestamp);
-		const diffInSeconds = Math.floor((now - commentDate) / 1000);
+		const diffInSeconds = Math.max(0, Math.floor((now - commentDate) / 1000));
+
+		if (diffInSeconds < 60) {
+			return "just now";
+		}
 
 		const minutes = Math.floor(diffInSeconds / 60);
 		const hours = Math.floor(diffInSeconds / 3600);
 		const days = Math.floor(diffInSeconds / 86400);
 
 		if (days > 0) {
-			return `${days} day${days > 1 ? "s" : ""} ago`;
+			return `${days}d ago`;
 		} else if (hours > 0) {
-			return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+			return `${hours}h ago`;
 		} else if (minutes > 0) {
-			return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+			return `${minutes}m ago`;
 		} else {
-			return `${diffInSeconds} second${diffInSeconds > 1 ? "s" : ""} ago`;
+			return "just now";
 		}
 	};
 
-	return (
-		<div className="w-[80%] xl:w-[60%] 2xl:w-[1000px] mt-5 md:mt-20">
-			<div className="mb-10 gap-[2em] justify-around">
-				<div className="relative">
+		return (
+			<div className="w-full max-w-2xl mx-auto px-4 sm:px-6 mt-10 md:mt-16">
+				{/* Header */}
+				<div className="flex items-center justify-between gap-3 mb-5">
+					<h3 className="type-title font-bold text-black dark:text-white">Gossip Corner</h3>
+					<button
+						onClick={fetchComments}
+						className="flex items-center gap-1.5 type-micro text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-all duration-300 relative group"
+						title="Refresh"
+					>
+						<img
+							src="/assets/icons/reload.svg"
+							alt="Reload"
+							className="size-3 dark:invert transition-all duration-300 group-hover:animate-spin"
+						/>
+						<span className="hidden sm:inline">Refresh</span>
+					</button>
+				</div>
+
+				{/* Input */}
+				<div className="flex flex-col gap-2 mb-6">
 					<textarea
-						className="resize-none overflow-hidden border-t-1 b-white p-2 transition-all duration-300 text-[.7em] md:text-base 2xl:text-2xl z-10 w-full leading-tight"
+						className="flex-1 resize-none overflow-hidden w-full bg-white dark:bg-white/5 rounded border border-black/15 dark:border-white/20 focus:border-black dark:focus:border-white text-black dark:text-white type-body p-2.5 focus:outline-none placeholder-black/40 dark:placeholder-white/40 transition-colors duration-300"
 						rows={1}
-						placeholder="Add a comment.. (only recent 5 are shown)"
+						placeholder="start the gossip.."
 						value={input}
 						onChange={(e) => {
 							if (e.target.value.length <= 100) {
 								setInput(e.target.value);
 								e.target.style.height = "auto";
-								e.target.style.height = `${e.target.scrollHeight}px`;
+								e.target.style.height = `${Math.min(e.target.scrollHeight, 80)}px`;
 							}
 						}}
 						maxLength={100}
 					/>
-
-					<div className="absolute text-[.4em] md:text-xs 2xl:text-base text-gray-500 right-1 top-0">
-						{input.length}/100
-					</div>
-				</div>
-				<div className="flex justify-end">
 					{input.trim() && (
-						<div className="flex justify-end animate-slide-up">
+						<div className="flex justify-end">
 							<button
 								onClick={handleSend}
-								className="border p-1 rounded-lg dark:border-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20"
+								className="p-2 text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
 								disabled={isSending}
+								title={isSending ? "Sending..." : "Send"}
 							>
 								<img
 									src="/assets/icons/send.svg"
 									alt="Send"
-									className="size-6 md:size-8 dark:invert transition-all duration-300"
+									className="size-4 dark:invert transition-all duration-300 hover:scale-110"
 								/>
 							</button>
 						</div>
 					)}
 				</div>
-			</div>
 
-			<div className="w-full flex justify-end">
-				<button
-					onClick={fetchComments}
-					className="absolute gap-[.5em] border p-[.5em] rounded-[100%] dark:border-white transition-all duration-300 text-[.3em] md:text-xs 2xl:text-sm group hover:bg-black/20 dark:hover:bg-white/20 transition-all duration-300"
-				>
-					<img
-						src="/assets/icons/reload.svg"
-						alt="Reload"
-						className="size-[1.5em] dark:invert transition-all duration-300 group-hover:animate-spin"
-					/>
-				</button>
+				{/* Chat Thread */}
+				<div className="flex flex-col gap-2">
+					{comments.length === 0 ? (
+						<div className="text-center py-4">
+							<p className="type-meta text-black/50 dark:text-white/50">no gossip yet</p>
+						</div>
+					) : (
+						[...comments].reverse().map((comment, index) => (
+							<div
+								key={index}
+								className="group relative animate-fadeIn"
+							>
+								<div className="flex gap-0 items-start">
+							<div className="flex-1 min-w-0">
+										<p className="type-body text-black dark:text-white break-words leading-snug whitespace-pre-wrap">{comment.comment}</p>
+										<span className="inline-block type-micro text-black/50 dark:text-white/50 mt-1">
+											{formatTimeAgo(comment.timestamp)}
+										</span>
+									</div>
+								</div>
+							</div>
+						))
+					)}
+				</div>
 			</div>
-
-			<ul className="flex flex-col text-[.7em] md:text-base 2xl:text-2xl px-[2em] gap-[1em] mt-5">
-				{[...comments].reverse().map((comment, index) => (
-					<li
-						className="border-b-1 border-black/20 dark:border-white/20"
-						key={index}
-					>
-						<p>{comment.comment}</p>
-						<span className="text-[.5em] md:text-base 2xl:text-2xl text-gray-500">
-							{formatTimeAgo(comment.timestamp)}
-						</span>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
+		);
 };
 
 export default Comments;

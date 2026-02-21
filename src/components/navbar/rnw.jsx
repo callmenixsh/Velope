@@ -7,23 +7,25 @@ const Rnw = () => {
 	const [suggestions, setSuggestions] = useState([]);
 	const [showSuggestions, setShowSuggestions] = useState(false);
 	const [suggestionSelected, setSuggestionSelected] = useState(false);
+	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const MAX_NAME_LENGTH = 11;
+	const MAX_NAME_LENGTH = 20;
 	const RESTRICTED_NAME = "Logs";
 
 	const isValidName = (value) => /^[a-zA-Z\s]+$/.test(value.trim());
 
 	const handleNavigate = (path) => {
 		if (name.trim().toLowerCase() === RESTRICTED_NAME.toLowerCase() && path === "/write") {
-			alert("You can only read the Logs.");
+			setError("You can only read the Logs.");
 			return;
 		}
 
 		if (isValidName(name) && name.trim().length <= MAX_NAME_LENGTH) {
+			setError("");
 			navigate(`${path}/${encodeURIComponent(name.trim())}`);
 		} else {
-			alert(`Please enter a valid name (max ${MAX_NAME_LENGTH} characters).`);
+			setError("Please enter a name to read/write a velope.");
 		}
 	};
 
@@ -55,6 +57,7 @@ const Rnw = () => {
 		setSuggestions([]);
 		setShowSuggestions(false);
 		setSuggestionSelected(true);
+		setError("");
 	};
 
 	const handleInputChange = (e) => {
@@ -62,61 +65,80 @@ const Rnw = () => {
 			setName(e.target.value);
 		}
 		setSuggestionSelected(false);
+		setError("");
 	};
 
 	return (
 		<div className="flex justify-center select-none">
-			<div className="flex justify-center pb-4 md:pt-3 2xl:pt-6 border-b-1 md:border-b-1 w-[95%] xl:w-[80%] 2xl:w-[1500px]">
-				<div className="font-Heading">
-					<div className="relative">
-						<input
-							className="font-Content w-full border-b-1 md:border-b-2 border-gray-400 dark:border-white/70 dark:focus:border-white focus:border-black outline-none px-2 placeholder-black/50 dark:placeholder-white/50 text-center text-lg md:text-xl 2xl:text-2xl transition-all duration-300"
-							placeholder="Name"
-							value={name}
-							onChange={handleInputChange}
-							onFocus={() => setShowSuggestions(true)}
-							onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-						/>
-						{showSuggestions && suggestions.length > 0 && (
-							<ul className="absolute bg-white dark:bg-black border-[0.5px] md:border-1 rounded-md shadow w-full z-10 text-sm md:text-xs 2xl:text-sm text-center">
-								{suggestions.map((s, idx) => (
-									<li
-										key={idx}
-										className="cursor-pointer px-2 py-1 hover:bg-gray-100 dark:hover:bg-white/10"
-										onClick={() => handleSuggestionClick(s)}
-									>
-										{s}
-									</li>
-								))}
-							</ul>
-						)}
-					</div>
-
-					<div className="flex justify-around mt-2 gap-4">
-						<div
-							className="group flex items-center text-sm md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
-							onClick={() => handleNavigate("/read")}
-						>
-							<img
-								src="/assets/icons/glasses.svg"
-								alt="Light icon"
-								className="dark:invert size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
-							/>
-							READ
-						</div>
-						<div
-							className="group flex items-center text-sm md:text-base 2xl:text-2xl transition-all duration-100 hover:scale-103"
-							onClick={() => handleNavigate("/write")}
-						>
-							<img
-								src="/assets/icons/pen.svg"
-								alt="Light icon"
-								className="dark:invert size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2 transition-all duration-100 group-hover:-rotate-10"
-							/>
-							WRITE
-						</div>
-					</div>
+			<div className="flex flex-col items-center w-[95%] xl:w-[80%] 2xl:w-[1500px] py-4 md:py-6 gap-2">
+				<div className="flex justify-center mb-2 gap-6 md:gap-10">
+					<button
+						type="button"
+						className="group flex items-center type-heading transition-all duration-150 cursor-pointer px-4 py-2 md:px-6 md:py-3 text-black"
+						onClick={() => handleNavigate("/read")}
+						style={{
+							backgroundImage: "url(/assets/strip.png)",
+							backgroundSize: "100% 100%",
+							backgroundRepeat: "no-repeat",
+						}}
+						onMouseEnter={e => e.currentTarget.style.transform = 'rotate(-3deg)'}
+						onMouseLeave={e => e.currentTarget.style.transform = 'none'}
+					>
+						   <img
+							   src="/assets/icons/glasses.svg"
+							   alt="Read icon"
+							   className="size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2"
+							   style={{ filter: 'invert(0)', color: 'black' }}
+						   />
+						<span className="ml-1 font-semibold text-black">READ</span>
+					</button>
+					<button
+						type="button"
+						className="group flex items-center type-heading transition-all duration-150 cursor-pointer px-4 py-2 md:px-6 md:py-3 text-black"
+						onClick={() => handleNavigate("/write")}
+						style={{
+							backgroundImage: "url(/assets/strip.png)",
+							backgroundSize: "100% 100%",
+							backgroundRepeat: "no-repeat",
+						}}
+						onMouseEnter={e => e.currentTarget.style.transform = 'rotate(3deg)'}
+						onMouseLeave={e => e.currentTarget.style.transform = 'none'}
+					>
+						   <img
+							   src="/assets/icons/pen.svg"
+							   alt="Write icon"
+							   className="size-6 md:size-8 xl:size-10 p-0.5 md:p-1 xl:p-2"
+							   style={{ filter: 'invert(0)', color: 'black' }}
+						   />
+						<span className="ml-1 font-semibold text-black">WRITE</span>
+					</button>
 				</div>
+				<div className="relative w-full max-w-xs md:max-w-sm">
+					<input
+						className="font-Content w-full border-0 border-b-2 border-gray-400 dark:border-white/70 dark:focus:border-white focus:border-black outline-none px-2 py-1 placeholder-black/50 dark:placeholder-white/50 text-center type-heading bg-transparent transition-all duration-300"
+						placeholder="Name"
+						value={name}
+						onChange={handleInputChange}
+						onFocus={() => setShowSuggestions(true)}
+						onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+					/>
+					{showSuggestions && suggestions.length > 0 && (
+						<ul className="absolute top-full mt-1 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-md shadow w-full z-10 type-body text-center overflow-hidden">
+							{suggestions.map((s, idx) => (
+								<li
+									key={idx}
+									className="cursor-pointer px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-150"
+									onClick={() => handleSuggestionClick(s)}
+								>
+									{s}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+				{error && (
+					<div className="text-red-500 dark:text-red-400 text-xs mt-1 text-center max-w-xs">{error}</div>
+				)}
 			</div>
 		</div>
 	);

@@ -1,35 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const ThemeToggle = () => {
+const ToggleTheme = () => {
 	const [dark, setDark] = useState(() =>
 		document.documentElement.classList.contains("dark")
 	);
+	const [isPulled, setIsPulled] = useState(false);
 
-	const toggleTheme = () => {
-		document.documentElement.classList.toggle("dark");
-		setDark(!dark);
+	const getStripPosition = () => {
+		//  up in dakr mode, lower in light mod
+		if (dark && !isPulled) return '-5.5rem'; 
+		if (!dark && !isPulled) return '-2.5rem'; 
+		if (isPulled && dark) return '-2.5rem'; 
+		if (isPulled && !dark) return '-5.5rem'; 
+		return '-5.5rem';
+	};
+
+	const handleToggle = () => {
+		setIsPulled(true);
+		setTimeout(() => {
+			setIsPulled(false);
+			document.documentElement.classList.toggle("dark");
+			setDark(!dark);
+		}, 120); 
 	};
 
 	return (
-		<button
-			onClick={toggleTheme}
-			className="rounded-full border border-black/20 dark:border-white/30 hover:shadow-[0_0_8px_#000] dark:hover:shadow-[0_0_8px_#fff]  transition-all duration-300"
-		>
-			{dark ? (
+		<div className="relative flex flex-col items-center justify-center select-none" style={{ height: '7rem', width: '4.5rem' }}>
+			<div
+				className={`transition-all duration-350 flex flex-col items-center`}
+				style={{
+					position: 'absolute',
+					top: getStripPosition(),
+					left: '50%',
+					transform: 'translateX(-50%)',
+					width: '4.5rem',
+					height: '7rem',
+					zIndex: 10,
+					cursor: 'pointer',
+				}}
+				onClick={handleToggle}
+				aria-label="Toggle light mode"
+			>
+				<div
+					style={{
+						width: '100%',
+						height: '100%',
+						background: 'url(/assets/lightstrip.png) center/contain no-repeat',
+					}}
+				/>
 				<img
 					src="/assets/icons/light.svg"
 					alt="Light icon"
-					className="size-5 md:size-6 xl:size-8 p-0.5 md:p-1 xl:p-2 border-black/20 dark:invert transition-all duration-300 "
+					className="w-5 h-5 mt-[-2.2rem] drop-shadow-lg"
+					style={{ filter: 'brightness(0) saturate(100%)', position: 'relative', zIndex: 11 }}
 				/>
-			) : (
-				<img
-					src="/assets/icons/dark.svg"
-					alt="Dark icon"
-					className="size-5 md:size-6 xl:size-8 p-0.5 md:p-1 xl:p-2 border-black/20 transition-all duration-300 "
-				/>
-			)}
-		</button>
+			</div>
+		</div>
 	);
 };
 
-export default ThemeToggle;
+export default ToggleTheme;

@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-	--font-Logo: "Jacques Francois Shadow", "sans-serif";
+	--font-Logo: "Pacifico", "cursive", "sans-serif";
 	--font-Heading: "Julius Sans One", "sans-serif";
 	--font-Content: "Lekton", "sans-serif";
-	--font-Message1: "Lavishly Yours", "sans-serif";
-	--font-Message2: "Ole", "sans-serif";
-	--font-Message3: "Send Flowers", "sans-serif";
-	--font-Message4: "Kablammo", "sans-serif";
-	--font-Message5: "Pacifico", "sans-serif";
-	--font-Message6: "Macondo", "sans-serif";
-	--font-Message7: "Tektur", "sans-serif";
+	--font-Message1: "Festive", "cursive", "sans-serif";
+	--font-Message2: "Schoolbell", "cursive", "sans-serif";
+	--font-Message3: "Kalam", "cursive", "sans-serif";
+	--font-Message4: "Kenia", "cursive", "sans-serif";
+	--font-Message5: "Emilys Candy", "cursive", "sans-serif";
+	--font-Message6: "WDXL Lubrifont TC", "cursive", "sans-serif";
+	--font-Message7: "Pirata One", "cursive", "sans-serif";
 	--font-Special: "Megrim", "sans-serif";
 	--color-red: #ffd5d5;
 	--color-orange: #ffe9db;
@@ -41,6 +41,37 @@ input::placeholder {
 }
 
 @layer utilities {
+  .velope-full-card {
+    @apply relative text-black flex flex-col rounded-xl border-[0.5px] md:border-1 dark:border-white shadow-sm transition-all duration-300 p-4 md:p-5 2xl:p-6;
+    background-image: url('/assets/paper-texture.png');
+    background-size: cover;
+    background-blend-mode: multiply;
+  }
+
+  .type-display {
+    @apply text-2xl md:text-3xl 2xl:text-4xl;
+  }
+
+  .type-title {
+    @apply text-lg md:text-xl 2xl:text-2xl;
+  }
+
+  .type-heading {
+    @apply text-base md:text-lg 2xl:text-xl;
+  }
+
+  .type-body {
+    @apply text-base md:text-lg 2xl:text-xl;
+  }
+
+  .type-meta {
+    @apply text-sm md:text-base 2xl:text-base;
+  }
+
+  .type-micro {
+    @apply text-xs md:text-xs 2xl:text-xs;
+  }
+
 	@keyframes fadeInCard {
 		from {
 			opacity: 0;
@@ -67,9 +98,20 @@ input::placeholder {
 		transform: translateY(0);
 	}
 }
-
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
 .animate-slide-up {
 	animation: slideUp 0.3s ease-out;
+}
+
+.animate-fadeIn {
+	animation: fadeIn 0.4s ease-out forwards;
 }
 
 

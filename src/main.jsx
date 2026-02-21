@@ -18,9 +18,9 @@ const Layout = ({ children }) => (
 <div className="min-h-screen flex flex-col">
   <Navbar />
   <ScrollToTop />
-  <div className="flex-grow min-h-full">
+  <main className="flex-grow min-h-full w-full">
     {children}
-  </div>
+  </main>
   <Footer />
 </div>
 

@@ -15,32 +15,56 @@ const Message = ({ message, fontClass }) => {
 		navigate(`/post/${message.messageId}`);
 	};
 
-	return (
+	// Pick a random card image for each message
+	const cardNum = React.useMemo(() => Math.floor(Math.random() * 3) + 1, [message.messageId]);
+	const cardUrl = `/assets/card${cardNum}.png`;
+
+	const cardStyle = {
+		color: message.textcolor,
+		backgroundImage: `linear-gradient(${message.color}, ${message.color}), url(/assets/paper-texture.png)`,
+		backgroundSize: '100% 100%',
+		backgroundRepeat: 'no-repeat',
+		backgroundPosition: 'center',
+		backgroundBlendMode: 'multiply',
+		WebkitMaskImage: `url(${cardUrl})`,
+		maskImage: `url(${cardUrl})`,
+		WebkitMaskSize: '100% 100%',
+		maskSize: '100% 100%',
+		WebkitMaskRepeat: 'no-repeat',
+		maskRepeat: 'no-repeat',
+		WebkitMaskPosition: 'center',
+		maskPosition: 'center',
+		overflow: 'visible',
+	};
+
+	return (<>
 		<div
-			className={`relative text-black flex ${fontClass} text-base md:text-lg 2xl:text-2xl p-2 md:p-4 2xl:p-6 w-72 h-68 md:h-74 md:w-82 2xl:h-100 2xl:w-110 rounded-md md:rounded-xl 2xl:rounded-xl border-[0.5px] md:border-1 dark:border-white transition-all duration-300`}
-			style={{ backgroundColor: message.color, color:message.textcolor }}
+			className={`velope-full-card ${fontClass} type-body cursor-pointer hover:-translate-y-[1px] w-[20rem] h-[22.86rem] md:w-[28rem] md:h-[32rem] `}
+			style={cardStyle}
 			onClick={handleNavigate}
 		>
-			<div className="w-full h-full overflow-hidden whitespace-pre-wrap break-words">
+			<div className="w-full h-full overflow-hidden whitespace-pre-wrap break-words p-5 md:p-8">
 				<div
 					dangerouslySetInnerHTML={{ __html: message.message }}
-					className="w-full h-full overflow-hidden"
+					className="w-full h-full overflow-hidden text-sm md:text-xl leading-[1.6]"
 				/>
 			</div>
-
-			<div className="absolute bottom-1 text-xs md:text-sm 2xl:text-base text-black">
+			<div className="absolute left-7 bottom-10 pl-2 md:pl-8 type-meta text-black text-[0.98rem] opacity-80">
 				{formattedDate}
 			</div>
-			<div className="absolute right-1 bottom-1 flex gap-2  transition-opacity duration-300">
+		</div>
+		{/* Reactions positioned bottom right, just outside the card */}
+		<div className="w-full flex justify-end relative" style={{height: 0, top: '-2.1rem'}}>
+			<div className="flex flex-wrap gap-1 max-w-[70%] bottom-8 md:bottom-10 pr-8 relative " >
 				<Reactions
 					messageId={message.messageId}
 					currentReactions={message.reactions}
-					className="text-xs md:text-sm 2xl:text-base"
-					smclassName="text-xs md:text-xs 2xl:text-sm p-1"
-				/>
+					className="type-meta"
+					smclassName="type-micro p-1"
+					/>
 			</div>
 		</div>
-	);
+	</>);
 };
 
 export default Message;

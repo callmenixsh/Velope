@@ -40,11 +40,9 @@ const Reactions = ({ messageId, currentReactions = {}, className = "", smclassNa
 		if (hasReacted) {
 			updatedUserReactions = updatedUserReactions.filter((e) => e !== emoji);
 			updatedReactions[emoji] = Math.max((updatedReactions[emoji] || 1) - 1, 0);
-			console.log(`🗑 Removing reaction: ${emoji}`);
 		} else {
 			updatedUserReactions.push(emoji);
 			updatedReactions[emoji] = (updatedReactions[emoji] || 0) + 1;
-			console.log(`➕ Adding reaction: ${emoji}`);
 		}
 
 		setUserReactions(updatedUserReactions);
@@ -63,44 +61,48 @@ const Reactions = ({ messageId, currentReactions = {}, className = "", smclassNa
 				}),
 			});
 
-			const result = await res.json();
-			console.log("📬 Reaction update sent:", {
-				emoji,
-				action: hasReacted ? "remove" : "add",
-				status: res.status,
-				response: result,
-			});
 		} catch (error) {
 			console.error("❌ Failed to update reaction:", error);
 		}
 	};
 
 	const sortedReactions = Object.entries(reactions)
-		.sort(([, a], [, b]) => a - b)
-		.map(([emoji, count]) => ({ emoji, count }));
+    .sort(([emojiA], [emojiB]) => {
+      const userReactedA = userReactions.includes(emojiA);
+      const userReactedB = userReactions.includes(emojiB);
+      if (userReactedA !== userReactedB) {
+        return userReactedA ? 1 : -1;
+      }
+      return reactions[emojiA] - reactions[emojiB];
+    })
+    .map(([emoji, count]) => ({ emoji, count }));
 
-	return (
-  <div className={`flex gap-[.2rem] select-none ${className}`}>
-    {sortedReactions.map(({ emoji, count }) => (
-      <button
-        key={emoji}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleReaction(emoji);
-        }}
-        className={`flex items-center  rounded-full px-[.2rem] transition-all hover:opacity-90 text-shadow-md drop-shadow-md p-1
-          ${userReactions.includes(emoji) ? "font-bold bg-white" : "bg-white/40"}
-
-          ${count > 0 ? "opacity-100" : "opacity-50"}
-        `}
-      >
-        <span>{emoji}</span>
-        {count > 0 && <span className={`${smclassName}`}>{count}</span>}
-      </button>
-    ))}
-  </div>
-);
-
+  return (
+    <div className={`flex gap-2 md:gap-4 select-none flex-wrap items-start ${className}`}>
+      {sortedReactions.map(({ emoji, count }) => {
+        return (
+          <button
+            key={emoji}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleReaction(emoji);
+            }}
+            className={`relative transition-all duration-300 cursor-pointer group hover:scale-110 ${
+              count === 0 ? "opacity-50" : "opacity-100"
+            }`}
+            title={`React with ${emoji}`}
+          >
+            <span className="text-lg sm:text-xl md:text-2xl block">{emoji}</span>
+            {count > 0 && (
+              <span className="absolute bottom-0 -right-1 bg-white text-black text-xs font-bold rounded-full w-3 h-4 flex items-center justify-center leading-none">
+                {count}
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
 };
 
 export default Reactions;
