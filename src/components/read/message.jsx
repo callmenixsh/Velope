@@ -49,7 +49,7 @@ const Message = ({ message, fontClass }) => {
 					className="w-full h-full overflow-hidden text-sm md:text-xl leading-[1.6]"
 				/>
 			</div>
-			<div className="absolute left-7 bottom-10 pl-2 md:pl-8 type-meta text-black text-[0.98rem] opacity-80">
+			<div className="absolute left-7 bottom-10 pl-2 md:pl-8 type-meta text-[0.98rem] opacity-80">
 				{formattedDate}
 			</div>
 		</div>

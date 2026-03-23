@@ -107,7 +107,7 @@ const Post = () => {
 						/>
 					</div>
 				</div>
-				<div className="absolute left-7 bottom-8 pl-6 type-meta text-black text-[0.98rem] opacity-80">
+				<div className="absolute left-7 bottom-8 pl-6 type-meta text-[0.98rem] opacity-80">
 					{formattedDate}
 				</div>
 			</div>
